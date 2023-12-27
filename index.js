@@ -4,11 +4,10 @@ const app = express();
 const port = 3000;
 
 const { Sched } = require("./schedule");
-const { client } = require('./config/db'); 
+const { client } = require('./config/db');
 
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 
 app.post('/schedules/add', async(req, res) => {
   try {
@@ -52,7 +51,7 @@ app.post('/findCommonSchedule/:userId/:friendId', async (req, res) => {
 
     const userSchedules = await cursor1.toArray();
     const friendSchedules = await cursor2.toArray();
-    
+
     const commonSchedules = findCommonSchedules(userSchedules, friendSchedules);
 
     if (commonSchedules.length > 0) {
@@ -113,15 +112,15 @@ function getCommonTime(time1, time2) {
   }
 
   const commonSchedule = [];
-  commonSchedule.push({ start: `2000-01-01T00:00`, end: startTime1});
+  commonSchedule.push({ start: `2000-01-01T00:00`, end: startTime1 });
 
   if (startTime2 > endTime1) { // 두 사람의 일정 사이에 공백이 존재할 경우
     const intervalStart = endTime1;
     const intervalEnd = startTime2;
-    commonSchedule.push({ start: intervalStart, end: intervalEnd});
+    commonSchedule.push({ start: intervalStart, end: intervalEnd });
   }
 
-  commonSchedule.push({ start: endTime2, end: `2000-01-01T00:00`});
+  commonSchedule.push({ start: endTime2, end: `2000-01-01T00:00` });
 
   const finalSchedule = [];
   for (let i = 0; i < commonSchedule.length; i++) {
@@ -132,7 +131,7 @@ function getCommonTime(time1, time2) {
   }
 
   return finalSchedule.length > 0 ? finalSchedule : []; // 빈 배열 반환 또는 다른 값 처리
-  
+
 }
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));

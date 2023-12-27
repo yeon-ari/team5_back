@@ -15,11 +15,11 @@ const schedSchema = mongoose.Schema({
         required: true
     },
     time: {
-        type: Number,
+        type: String,
         required: true
     },
     type: { // 유동인지 고정인지
-        type: Boolean,
+        type: String,
         default: "유동"
     },
     attendees: {
@@ -29,7 +29,7 @@ const schedSchema = mongoose.Schema({
         type: String
     },
     visibility: {
-        type: Boolean,
+        type: String,
         default: "공개"
     }
 })
